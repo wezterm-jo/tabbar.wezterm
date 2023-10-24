@@ -93,16 +93,27 @@ local process_icons = {
 
 local M = {}
 
-local function get_current_working_dir(tab)
-    local current_dir = tab.active_pane.current_working_dir
-    local HOME_DIR = string.format("file://%s", os.getenv("HOME"))
-
-    if current_dir == HOME_DIR then
-        return "~"
-    end
-
-    return string.gsub(current_dir, "(.*[/\\])(.*)", "%2")
+local function basename(s)
+    return string.gsub(s, '(.*[/\\])(.*)', '%2')
 end
+
+local function get_current_working_dir(pane)
+    local cwd_uri = pane:get_current_working_dir()
+    local dir = basename(cwd_uri.file_path)
+
+    return dir
+end
+
+-- local function get_current_working_dir(tab)
+--     local current_dir = tab.active_pane.current_working_dir
+--     local HOME_DIR = string.format("file://%s", os.getenv("HOME"))
+
+--     if current_dir == HOME_DIR then
+--         return "~"
+--     end
+
+--     return string.gsub(current_dir, "(.*[/\\])(.*)", "%2")
+-- end
 
 local function get_process(tab)
     local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
@@ -125,7 +136,7 @@ function M.apply_to_config()
             end
         end
 
-        local title = string.format("%s %s", get_process(tab), get_current_working_dir(tab))
+        local title = string.format("%s", get_current_working_dir(tab.active_pane))
 
         if tab.active_pane.is_zoomed then
             title = title .. " " .. wezterm.nerdfonts.md_alpha_z_box
