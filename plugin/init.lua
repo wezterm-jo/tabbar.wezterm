@@ -33,7 +33,7 @@ local process_icons = {
         { Text = wezterm.nerdfonts.dev_vim },
     },
     ["vi"] = {
-        { Text = wezterm.nerdfonts.dev_vim },
+        { Text = wezterm.nerdfonts.custom_vim },
     },
     ["node"] = {
         { Text = wezterm.nerdfonts.mdi_hexagon },
